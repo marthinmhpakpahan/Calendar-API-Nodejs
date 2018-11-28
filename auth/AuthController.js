@@ -1,8 +1,5 @@
 var express = require("express");
 var router = express.Router();
-var bodyParser = require("body-parser");
-router.use(bodyParser.urlencoded({ extended: false }));
-router.use(bodyParser.json());
 var User = require("../user/User");
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
@@ -61,7 +58,7 @@ router.get("/me", VerifyToken, function(req, res) {
 
   // After middleware added (VerifyToken)
   User.findById(
-    decoded.id,
+    req.userId,
     { password: 0 }, // Projection | Avoid return password
     function(err, user) {
       if (err)
